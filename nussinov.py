@@ -96,5 +96,5 @@ class Nussinov():
 rna_sequence = "GGCAGUACCAAGUCGCGAAAGCGAUGGCCUUGCAAAGGGUAUGGUAAUAAGCUGCC"
 nussinov_instance = Nussinov(rna_sequence)
 
-# Execute the algorithm to compute the RNA folding
+# Execute the algorithm to compute the RNA folding.
 paired_bases = nussinov_instance.execute()
