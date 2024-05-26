@@ -9,92 +9,78 @@ class Nussinov():
         """rnaSequence: The RNA sequence for which the folding should be computed."""
         self.sequence = rnaSequence
         self.pairedBases = {}
-        self.computationMatrix = [[]]
+        self.computationMatrix = []
 
     def computeMatrix(self):
         """This function computes the matrix which the Nussinov-algorithm is based on."""
-        self.computationMatrix = [[0 for i in range(len(self.sequence)+1) ] for j in range(len(self.sequence))]
-        i = 2
-        while i <= len(self.sequence):
-            k = i
-            j = 0
-            while j <= (len(self.sequence)-2) and k <= (len(self.sequence)):
-                self.computeMatrixCell(j, k)
-                j += 1
-                k += 1
-            i += 1
+        seq_len = len(self.sequence)
+        self.computationMatrix = [[0] * seq_len for _ in range(seq_len)]
 
+        for length in range(1, seq_len):  # length is the span of the subsequence
+            for i in range(seq_len - length):  # i is the start index
+                j = i + length  # j is the end index
+                self.computeMatrixCell(i, j)
+          
     def computeMatrixCell(self, i, j):
         """This function computes the value for every cell of the matrix for the Nussinov-algorithm.
             i:  First index of cell of the Nussinov-matrix
             j:  Second index of cell of the Nussinov-matrix
-        Every cell is the maximum of:
-                            |       N_(i, j-1)
-            N_(i,j) = max   |max i <= k < j N_(i, k-1) + N_(k+1, j-1) + 1
-                            |       S_k and S_j are complementary
         """
-        self.computationMatrix[i][j-1]
-        maximumValue = [0, 0, 0]
-        k = i
-        while i <= k and k < j:
-            if self.complementary(self.sequence[k], self.sequence[j-1]):
-                pairingValue = self.computationMatrix[i][k-1] + self.computationMatrix[k+1][j-1] + 1
-                if maximumValue[2] < pairingValue:
-                    maximumValue[0] = k
-                    maximumValue[1] = j
-                    maximumValue[2] = pairingValue
-            k += 1
-        self.computationMatrix[i][j] = max(self.computationMatrix[i][j-1], maximumValue[2])
+        if i >= j:
+            return
+        max_value = self.computationMatrix[i][j-1]
+        for k in range(i, j):
+            if self.complementary(self.sequence[k], self.sequence[j]):
+                pairing_value = (self.computationMatrix[i][k-1] if k > i else 0) + \
+                               (self.computationMatrix[k+1][j-1] if k+1 <= j-1 else 0) + 1
+                max_value = max(max_value, pairing_value)
 
+        self.computationMatrix[i][j] = max_value
+       
     def complementary(self, characterA, characterB):
         """Returns True if two RNA nucleotides are complementary, False otherwise.
-        Nucleotides are complementary if there are "A" and "U" or "C" and "G".
+        Nucleotides are complementary if they are "A" and "U" or "C" and "G".
             characterA: First nucleotide
             characterB: Second nucleotide"""
-        if characterA == "A" and characterB == "U":
-            return True
-        elif characterA == "U" and characterB == "A":
-            return True
-        elif characterA == "C" and characterB == "G":
-            return True
-        elif characterA == "G" and characterB == "C":
-            return True
-        return False
+        complementary_pairs = {('A', 'U'), ('U', 'A'), ('C', 'G'), ('G', 'C')}
+        return (characterA, characterB) in complementary_pairs
 
     def traceback(self, i, j):
-        """Computes the traceback for the Nussinov-algorithm.
-            i:  First index of cell of the Nussinov-matrix
-            j:  Second index of cell of the Nussinov-matrix
+        """Computes the traceback for the Nussinov algorithm.
+            i: First index of cell of the Nussinov matrix
+            j: Second index of cell of the Nussinov matrix
         """
         if j <= i:
             return
-        elif self.computationMatrix[i][j] == self.computationMatrix[i][j-1]:
+        if self.computationMatrix[i][j] == self.computationMatrix[i][j-1]:
             self.traceback(i, j-1)
-            return
         else:
-            k = i
-            while i <= k and k < j:
-                if self.complementary(self.sequence[k-1], self.sequence[j-1]):
-
-                    if self.computationMatrix[i][j] == self.computationMatrix[i][k-1] + self.computationMatrix[k][j-1] + 1:
+            for k in range(i, j):
+                if self.complementary(self.sequence[k], self.sequence[j]):
+                    if self.computationMatrix[i][j] == (self.computationMatrix[i][k-1] if k > i else 0) + \
+                                                       (self.computationMatrix[k+1][j-1] if k+1 <= j-1 else 0) + 1:
                         self.pairedBases[k] = j
                         self.traceback(i, k-1)
-                        self.traceback(k, j-1)
+                        self.traceback(k+1, j-1)
                         return
-                k += 1
 
     def execute(self):
-        """To compute the Nussinov-algorithm execute this method. It returns a dictionary with the paired bases."""
+        """To compute the Nussinov algorithm, execute this method. It returns a dictionary with the paired bases."""
+        user_input = input("Enter RNA sequence or press 1 to use the default sequence: ")
+        if user_input == '1':
+            self.sequence = "GGCAGUACCAAGUCGCGAAAGCGAUGGCCUUGCAAAGGGUAUGGUAAUAAGCUGCC"
+        else:
+            self.sequence = user_input
+        
         self.computeMatrix()
-        self.traceback(0, len(self.sequence))
+        self.traceback(0, len(self.sequence) - 1)
         print(self.pairedBases)
         print(len(self.pairedBases))
         return self.pairedBases
-    
 
-# Initialize the Nussinov algorithm with an RNA sequence
-rna_sequence = "GGCAGUACCAAGUCGCGAAAGCGAUGGCCUUGCAAAGGGUAUGGUAAUAAGCUGCC"
-nussinov_instance = Nussinov(rna_sequence)
+
+# Initialize the Nussinov algorithm without a predefined RNA sequence
+nussinov_instance = Nussinov("")
 
 # Execute the algorithm to compute the RNA folding.
 paired_bases = nussinov_instance.execute()
