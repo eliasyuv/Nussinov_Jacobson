@@ -64,6 +64,14 @@ class Nussinov():
                         self.traceback(k+1, j-1)
                         return
 
+    def generate_dot_bracket(self):
+        """Generates the dot-bracket notation for the RNA sequence based on the paired bases."""
+        dot_bracket = list("." * len(self.sequence))
+        for i, j in self.pairedBases.items():
+            dot_bracket[i] = "("
+            dot_bracket[j] = ")"
+        return "".join(dot_bracket)
+
     def execute(self):
         """To compute the Nussinov algorithm, execute this method. It returns a dictionary with the paired bases."""
         user_input = input("Enter RNA sequence or press 1 to use the default sequence: ")
@@ -74,13 +82,13 @@ class Nussinov():
         
         self.computeMatrix()
         self.traceback(0, len(self.sequence) - 1)
-        print(self.pairedBases)
-        print(len(self.pairedBases))
-        return self.pairedBases
+        dot_bracket = self.generate_dot_bracket()
+        print(dot_bracket)
+        return dot_bracket
 
 
 # Initialize the Nussinov algorithm without a predefined RNA sequence
 nussinov_instance = Nussinov("")
 
 # Execute the algorithm to compute the RNA folding.
-paired_bases = nussinov_instance.execute()
+dot_bracket_output = nussinov_instance.execute()
