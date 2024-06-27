@@ -6,10 +6,15 @@ This project implements the Nussinov algorithm for RNA secondary structure predi
 **Usage**
 
 Installation
+
 Ensure you have Python installed on your system.
 
 Running the Script
+
 Save the RNA sequence in the script or provide it during runtime.
+
 Run the nussinov.py script.
+
 The script will prompt you to enter an RNA sequence or press 1 to use the default sequence.
+
 The script will output the paired bases and the corresponding dot-bracket notation.
