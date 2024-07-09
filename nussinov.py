@@ -87,8 +87,8 @@ class Nussinov():
         return dot_bracket
 
 
-# Initialize the Nussinov algorithm without a predefined RNA sequence
+## Initialize the Nussinov algorithm without a predefined RNA sequence
 nussinov_instance = Nussinov("")
 
-# Execute the algorithm to compute the RNA folding.
+## Execute the algorithm to compute the RNA folding.
 dot_bracket_output = nussinov_instance.execute()
