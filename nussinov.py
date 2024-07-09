@@ -73,7 +73,7 @@ class Nussinov():
         return "".join(dot_bracket)
 
     def execute(self):
-        """To compute the Nussinov algorithm, execute this method. It returns a dictionary with the paired bases."""
+        """To compute the Nussinov algorithm , execute this method. It returns a dictionary with the paired bases."""
         user_input = input("Enter RNA sequence or press 1 to use the default sequence: ")
         if user_input == '1':
             self.sequence = "GGCAGUACCAAGUCGCGAAAGCGAUGGCCUUGCAAAGGGUAUGGUAAUAAGCUGCC"
