@@ -1,6 +1,6 @@
 import RNA
 
-# biological result (NMR)
+# NMR
 sequence1 = "GGCAGUACCAAGUCGCGAAAGCGAUGGCCUUGCAAAGGGUAUGGUAAUAAGCUGCC"
 structure1 = "(((((((((..(((((....))))).(((((....)))))..))).....))))))"
 
