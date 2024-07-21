@@ -1,9 +1,6 @@
 class Nussinov():
     """The algorithm of Nussinov is an RNA secondary structure folding algorithm. It was developed by Ruth Nussinov et al.
-    and was published in 1978:
-            Nussinov, Ruth, et al. "Algorithms for loop matchings."
-            SIAM Journal on Applied mathematics 35.1 (1978): 68-82.
-            http://rci.rutgers.edu/~piecze/GriggsNussinovKleitmanPieczenik.pdf
+    and was published in 1978
     """
     def __init__(self, rnaSequence):
         """rnaSequence: The RNA sequence for which the folding should be computed."""
@@ -73,7 +70,7 @@ class Nussinov():
         return "".join(dot_bracket)
 
     def execute(self):
-        """To compute the Nussinov algorithm , execute this method. It returns a dictionary with the paired bases."""
+        """To compute the Nussinov algorithm , execute this method"""
         user_input = input("Enter RNA sequence or press 1 to use the default sequence: ")
         if user_input == '1':
             self.sequence = "GGCAGUACCAAGUCGCGAAAGCGAUGGCCUUGCAAAGGGUAUGGUAAUAAGCUGCC"
@@ -91,4 +88,4 @@ class Nussinov():
 nussinov_instance = Nussinov("")
 
 ## Execute the algorithm to compute the RNA folding.
-dot_bracket_output = nussinov_instance.execute()
+nussinov_instance.execute()
